@@ -1,41 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Commits List</title>
+  <style>
+    /* Reset styles for consistency */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    /* Style for the list container */
+    .commits-container {
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    /* Style for each list item */
+    .commit-item {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    /* Style for the commit message */
+    .commit-message {
+      font-weight: bold;
+    }
+    
+    /* Style for the commit author */
+    .commit-author {
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>GitHub Commits List</h1>
+  <div class="commits-container">
+    <ul id="commits-list"></ul>
+  </div>
 
-
-<style>
-#commits-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-#commits-list li {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-#commits-list li p {
-  margin: 0;
-}
-</style>
-
-<ul id="commits-list"></ul>
-<script>
-fetch('https://api.github.com/repos/Flex01a/beta.animeAI/commits')
-  .then(response => response.json())
-  .then(data => {
-    // process the data and create HTML list items
-    const commitsList = document.getElementById('commits-list');
-    data.forEach(commit => {
-      const listItem = document.createElement('li');
-      const commitMessage = document.createElement('p');
-      commitMessage.textContent = commit.commit.message;
-      const commitAuthor = document.createElement('p');
-      commitAuthor.textContent = `Author: ${commit.commit.author.name}`;
-      listItem.appendChild(commitMessage);
-      listItem.appendChild(commitAuthor);
-      commitsList.appendChild(listItem);
-    });
-  })
-  .catch(error => console.error(error));
-</script>
+  <script>
+    // Fetch the commits data from GitHub API
+    fetch('https://api.github.com/repos/<username>/<repo>/commits')
+      .then(response => response.json())
+      .then(data => {
+        // Process the data and create HTML list items
+        const commitsList = document.getElementById('commits-list');
+        data.forEach(commit => {
+          const listItem = document.createElement('li');
+          const commitMessage = document.createElement('p');
+          commitMessage.classList.add('commit-message');
+          commitMessage.textContent = commit.commit.message;
+          const commitAuthor = document.createElement('p');
+          commitAuthor.classList.add('commit-author');
+          commitAuthor.textContent = `Author: ${commit.commit.author.name}`;
+          const commitDate = document.createElement('p');
+          commitDate.textContent = `Date: ${new Date(commit.commit.author.date).toLocaleString()}`;
+          listItem.appendChild(commitMessage);
+          listItem.appendChild(commitAuthor);
+          listItem.appendChild(commitDate);
+          commitsList.appendChild(listItem);
+        });
+      })
+      .catch(error => console.error(error));
+  </script>
+</body>
+</html>
