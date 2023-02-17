@@ -1,1 +1,41 @@
-Coming Soon
+
+
+<style>
+#commits-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#commits-list li {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#commits-list li p {
+  margin: 0;
+}
+</style>
+
+<ul id="commits-list"></ul>
+<script>
+fetch('https://api.github.com/repos/<username>/<repo>/commits')
+  .then(response => response.json())
+  .then(data => {
+    // process the data and create HTML list items
+    const commitsList = document.getElementById('commits-list');
+    data.forEach(commit => {
+      const listItem = document.createElement('li');
+      const commitMessage = document.createElement('p');
+      commitMessage.textContent = commit.commit.message;
+      const commitAuthor = document.createElement('p');
+      commitAuthor.textContent = `Author: ${commit.commit.author.name}`;
+      listItem.appendChild(commitMessage);
+      listItem.appendChild(commitAuthor);
+      commitsList.appendChild(listItem);
+    });
+  })
+  .catch(error => console.error(error));
+</script>
